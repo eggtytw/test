@@ -861,95 +861,132 @@
     }
 
     async function pwProbeAll() {
-        const sel = document.getElementById('pw-sel-storm');
-        const stormId = sel.value;
-        if (!stormId || !pwStorms[stormId]) return;
-
-        const baseValidTime = pwStorms[stormId].valid_time; // 原始 valid_time
-        pwImgCache.clear();
-        pwMissing.clear();
-
-        // 顯示讀取條
-        const wrap = document.getElementById('pw-preload-wrap');
-        const bar  = document.getElementById('pw-preload-bar');
-        if (wrap) wrap.style.display = 'block';
-        if (bar) bar.style.width = '0%';
-
-        document.querySelectorAll('#pw-time-grid .pw-time-circle').forEach(c => {
-            c.classList.remove('missing');
-            c.classList.add('probing');
-        });
-
-        pwActiveBaseTime = null; // 每次重新探測前先重置
-
-        // 1. 尋找可用的基準時間 (Backtrack 0 to -24h)
-        let foundBaseTime = null;
-        const backtrackOffsets = [0, -6, -12, -18, -24];
-        
-        for (let bt of backtrackOffsets) {
-            // 以 T+0 (目前時間) 測試該時間點是否存在圖片
-            const testUrl = getPathwayImagePath(stormId, pwModel, bt, baseValidTime).replace('.png', '_cone.png')
-            const exists = await new Promise(resolve => {
-                const img = new Image();
-                img.onload = () => resolve(true);
-                img.onerror = () => resolve(false);
-                img.src = testUrl;
+            const sel = document.getElementById('pw-sel-storm');
+            const stormId = sel.value;
+            if (!stormId || !pwStorms[stormId]) return;
+    
+            const baseValidTime = pwStorms[stormId].valid_time; // 原始 valid_time
+            pwImgCache.clear();
+            pwMissing.clear();
+    
+            // 顯示讀取條
+            const wrap = document.getElementById('pw-preload-wrap');
+            const bar  = document.getElementById('pw-preload-bar');
+            if (wrap) wrap.style.display = 'block';
+            if (bar) bar.style.width = '0%';
+    
+            document.querySelectorAll('#pw-time-grid .pw-time-circle').forEach(c => {
+                c.classList.remove('missing');
+                c.classList.add('probing');
             });
-
-            if (exists) {
-                // 找到可用的起始點，計算出實際偏移後的基準日期對象
-                const originalDate = new Date(baseValidTime.replace(' ', 'T') + 'Z');
-                foundBaseTime = new Date(originalDate.getTime() + bt * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
-                pwActiveBaseTime = foundBaseTime; // 記錄真正有圖的基準時間
-                break; 
+    
+            pwActiveBaseTime = null; // 每次重新探測前先重置
+    
+            // 1. 尋找可用的基準時間 (Backtrack 0 to -24h)
+            // 寬容探測：只要 .png 或 _cone.png 其中一種類型的圖片存在即可
+            let foundBaseTime = null;
+            const backtrackOffsets = [0, -6, -12, -18, -24];
+            
+            for (let bt of backtrackOffsets) {
+                const testUrlNormal = getPathwayImagePath(stormId, pwModel, bt, baseValidTime);
+                const testUrlCone   = getConeImagePath(stormId, pwModel, bt, baseValidTime);
+                
+                const exists = await new Promise(resolve => {
+                    let normalOk = false;
+                    let coneOk = false;
+                    let settled = 0;
+    
+                    const checkDone = () => {
+                        settled++;
+                        if (settled === 2) {
+                            resolve(normalOk || coneOk); // 只要有一張成功就通過
+                        }
+                    };
+    
+                    const imgNormal = new Image();
+                    imgNormal.onload = () => { normalOk = true; checkDone(); };
+                    imgNormal.onerror = () => { checkDone(); };
+                    imgNormal.src = testUrlNormal;
+    
+                    const imgCone = new Image();
+                    imgCone.onload = () => { coneOk = true; checkDone(); };
+                    imgCone.onerror = () => { checkDone(); };
+                    imgCone.src = testUrlCone;
+                });
+    
+                if (exists) {
+                    // 找到可用的起始點，計算出實際偏移後的基準日期對象
+                    const originalDate = new Date(baseValidTime.replace(' ', 'T') + 'Z');
+                    foundBaseTime = new Date(originalDate.getTime() + bt * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+                    pwActiveBaseTime = foundBaseTime; // 記錄真正有圖的基準時間
+                    break; 
+                }
             }
-        }
-
-        if (!foundBaseTime) {
-            // 若找了24小時都沒圖
-            document.getElementById('pw-error-msg').innerText = '找不到預報圖片 (24h內)';
-            if (wrap) wrap.style.display = 'none';
-            return;
-        }
-
-        // 2. 使用找到的基準時間載入所有時效 (T-18 to T0)
-        let loaded = 0;
-        const total = pwOffsets.length;
-
-        // 修正：定義 checkAllDone 函數以更新進度條
-        function checkAllDone() {
-            loaded++;
-            const pct = Math.round(loaded / (total * 2) * 100);
-            if (bar) bar.style.width = pct + '%';
-            if (loaded >= total * 2) {
-                pwFinishProbe();
+    
+            if (!foundBaseTime) {
+                // 若找了24小時都沒圖
+                document.getElementById('pw-error-msg').innerText = '找不到預報圖片 (24h內)';
+                if (wrap) wrap.style.display = 'none';
+                return;
             }
-        }
+    
+            // 2. 使用找到的基準時間載入所有時效 (T-18 to T0)
+            let loaded = 0;
+            const total = pwOffsets.length;
+    
+            // 用來追蹤每個時效 index 的圖片載入成功狀態
+            const frameStatus = Array.from({ length: total }, () => ({ normal: false, cone: false }));
+    
+            // 修正：當所有圖片的 onload/onerror 都結束後，才統一進行時效缺失判定
+            function checkAllDone() {
+                loaded++;
+                const pct = Math.round(loaded / (total * 2) * 100);
+                if (bar) bar.style.width = pct + '%';
+                
+                if (loaded >= total * 2) {
+                    pwOffsets.forEach((_, i) => {
+                        const status = frameStatus[i];
+                        if (status.normal || status.cone) {
+                            // 只要有任何一張圖載入成功，此時效就不算 missing，允許播放
+                            pwMissing.delete(i);
+                            pwSetCircleState(i, false);
+                        } else {
+                            // 兩張圖都載入失敗，才判定為缺失
+                            pwMissing.add(i);
+                            pwSetCircleState(i, true);
+                        }
+                    });
+                    pwFinishProbe();
+                }
+            }
 
         pwOffsets.forEach((offset, i) => {
             const srcNormal = getPathwayImagePath(stormId, pwModel, offset, foundBaseTime);
             const srcCone   = getConeImagePath(stormId, pwModel, offset, foundBaseTime);
             
-            // 同時對兩張圖進行預載入
-            [srcNormal, srcCone].forEach(src => {
-                const img = new Image();
-                img.onload = () => {
-                    pwImgCache.set(src, img);
-                    if (!src.includes('_cone')) {
-                        pwSetCircleState(i, false);
-                    }
-                    checkAllDone();
-                };
-                img.onerror = () => {
-                    if (src.includes('_cone')) { /* Cone圖缺失可選處理 */ }
-                    else { 
-                        pwMissing.add(i); 
-                        pwSetCircleState(i, true); 
-                    }
-                    checkAllDone();
-                };
-                img.src = src;
-            });
+            // 載入路徑圖 (.png)
+            const imgNormal = new Image();
+            imgNormal.onload = () => {
+                pwImgCache.set(srcNormal, imgNormal);
+                frameStatus[i].normal = true;
+                checkAllDone();
+            };
+            imgNormal.onerror = () => {
+                checkAllDone();
+            };
+            imgNormal.src = srcNormal;
+
+            // 載入潛勢圖 (_cone.png)
+            const imgCone = new Image();
+            imgCone.onload = () => {
+                pwImgCache.set(srcCone, imgCone);
+                frameStatus[i].cone = true;
+                checkAllDone();
+            };
+            imgCone.onerror = () => {
+                checkAllDone();
+            };
+            imgCone.src = srcCone;
         });
     }
 
