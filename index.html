@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EGTY_Weather_Lab</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --bg-color: #f8f9fa;
+            --white: #ffffff;
+            --text-main: #333333;
+            --text-muted: #777777;
+            --accent-color: #f0f0f0;
+            --border-color: #eeeeee;
+            --primary-blue: #007bff;
+            --topbar-height: 56px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "Microsoft JhengHei", sans-serif; }
+        body { background-color: var(--bg-color); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        .nav-overlay {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.35);
+            z-index: 90;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .nav-overlay.open { opacity: 1; }
+
+        nav {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--white);
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        .logo {
+            padding: 0 30px 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-main);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-close-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px 6px;
+        }
+
+        .menu-list { list-style: none; flex-grow: 1; }
+        .menu-item {
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .menu-item:hover, .menu-item.active { background-color: var(--accent-color); color: var(--text-main); }
+        .menu-item.active { font-weight: 600; border-right: 4px solid #333; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; }
+
+        .has-submenu:hover .submenu { max-height: 300px; }
+        .submenu {
+            list-style: none;
+            background-color: #fafafa;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+        .submenu-item {
+            padding: 12px 30px 12px 65px;
+            display: block;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .submenu-item:hover, .submenu-item.active {
+            background-color: var(--accent-color);
+            color: var(--text-main);
+        }
+
+        .topbar {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: var(--topbar-height);
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            padding: 0 16px;
+            z-index: 80;
+            gap: 12px;
+        }
+        .topbar-logo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-main);
+            letter-spacing: 1px;
+            flex: 1;
+        }
+        .hamburger {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        main {
+            margin-left: var(--sidebar-width);
+            flex-grow: 1;
+            padding: 40px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .content-section { width: 100%; display: none; }
+        .content-section.active { display: block; }
+
+        /* ── Model V4 viewer ── */
+        .model-container {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .visual-area { flex: 3.5; display: flex; flex-direction: column; }
+
+        .image-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #f2f2f2;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-wrapper.pathway-ratio {
+            aspect-ratio: 13.5 / 9;
+        }
+        .playback-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 180px;
+        }
+        .speed-control label { white-space: nowrap; font-size: 0.75rem; font-weight: bold; color: #666; }
+        .speed-slider { flex-grow: 1; cursor: pointer; accent-color: var(--text-main); }
+
+        .progress-container {
+            flex-grow: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar { width: 0%; height: 100%; background: var(--primary-blue); transition: width 0.3s; }
+
+        .control-panel {
+            flex: 1;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .control-group { margin-bottom: 10px; }
+        .control-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.8rem; color: #555; }
+        .control-group select {
+            width: 100%; padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 0.85rem;
+            outline: none;
+            background: white;
+        }
+
+        .play-btn {
+            width: 100%; padding: 10px;
+            cursor: pointer;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-height: 42px;
+        }
+
+        .time-scroll-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            padding: 8px;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(32px, 1fr));
+            gap: 6px;
+        }
+
+        .time-circle {
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            min-width: 28px;
+        }
+        .time-circle:hover:not(.missing):not(.probing) { background: #f8f9fa; border-color: #ccc; }
+        .time-circle.active { background: var(--text-main); color: white; border-color: var(--text-main); font-weight: bold; }
+        .time-circle.missing { background-color: #e0e0e0; color: #aaaaaa; border-color: #d0d0d0; cursor: not-allowed; opacity: 0.6; }
+        .time-circle.probing { background-color: #fffde7; border-color: #ffe082; color: #ccc; cursor: default; }
+
+        .time-scroll-container::-webkit-scrollbar { width: 4px; }
+        .time-scroll-container::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+
+        /* ── Storm cards on homepage ── */
+        .home-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 860px;
+            margin: 0 auto;
+        }
+        .home-card h1 { font-size: 1.4rem; color: var(--text-main); }
+        .home-card .subtitle { color: var(--text-muted); margin-top: 8px; font-size: 0.9rem; }
+        .home-card .warning { color: red; margin-top: 10px; font-size: 0.85rem; }
+
+        .storm-list { margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+
+        .storm-card {
+            background: #f8f9fa;
+            border: 1px solid #e4e8ed;
+            border-radius: 10px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .storm-icon {
+            width: 52px; height: 52px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .storm-icon.td { background: #e3f2fd; color: #1565c0; }
+        .storm-icon.ts { background: #e8f5e9; color: #2e7d32; }
+        .storm-icon.sts { background: #fff8e1; color: #f57f17; }
+        .storm-icon.ty { background: #fce4ec; color: #c62828; }
+        .storm-icon.sty { background: #f3e5f5; color: #6a1b9a; }
+        .storm-icon.super { background: #212121; color: #ff6f00; }
+
+        .storm-info { flex: 1; }
+        .storm-name-row { display: flex; align-items: baseline; gap: 10px; }
+        .storm-name { font-size: 1.05rem; font-weight: 700; color: var(--text-main); }
+        .storm-id { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; }
+        .storm-category-tag {
+            font-size: 0.7rem; font-weight: 700;
+            padding: 2px 8px; border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+        .storm-meta { display: flex; gap: 18px; margin-top: 8px; flex-wrap: wrap; }
+        .storm-meta-item { font-size: 0.8rem; color: #555; display: flex; align-items: center; gap: 5px; }
+        .storm-meta-item i { color: var(--text-muted); width: 14px; }
+        .storm-time { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; font-family: monospace; }
+
+        .no-storm-msg { margin-top: 24px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px dashed #ddd; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ── Pathway viewer ── */
+        .pathway-container {
+            display: flex;
+            gap: 25px;
+            align-items: flex-start;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .pathway-visual { flex: 2.5; display: flex; flex-direction: column; }
+        .pathway-panel {
+            flex: 1;
+            min-width: 180px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .pathway-model-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+            background: #333;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+        .pw-time-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 4px;
+        }
+        .pw-time-circle {
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 8px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            color: #888;
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            line-height: 1.3;
+        }
+        .pw-time-circle:hover:not(.missing):not(.probing) { background: #f0f0f0; border-color: #bbb; }
+        .pw-time-circle.active { background: #333; color: white; border-color: #333; font-weight: 700; }
+        .pw-time-circle.missing { background: #e8e8e8; color: #bbb; cursor: not-allowed; opacity: 0.55; }
+        .pw-time-circle.probing { background: #fffde7; border-color: #ffe082; color: #ccc; cursor: default; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            :root { --sidebar-width: 0px; }
+            nav {
+                transform: translateX(-260px);
+                width: 260px;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.10);
+            }
+            nav.open { transform: translateX(0); }
+            .nav-overlay { display: block; pointer-events: none; }
+            .nav-overlay.open { pointer-events: auto; }
+            .nav-close-btn { display: block; }
+            .topbar { display: flex; }
+            main { margin-left: 0; padding: 80px 20px 24px; align-items: flex-start; }
+        }
+
+        @media (max-width: 640px) {
+            main { padding: 72px 12px 20px; }
+            .model-container { flex-direction: column; gap: 16px; }
+            .visual-area, .control-panel { flex: unset; width: 100%; }
+            .time-scroll-container { max-height: 180px; }
+            .playback-controls { gap: 12px; }
+            .speed-control { min-width: 0; flex: 1; }
+            .control-group select { padding: 8px 6px; font-size: 0.9rem; }
+            .play-btn { padding: 12px; font-size: 0.9rem; }
+            .pathway-container { flex-direction: column; gap: 16px; }
+            .pathway-visual, .pathway-panel { flex: unset; width: 100%; }
+            .pw-time-grid { grid-template-columns: repeat(4, 1fr); }
+            .storm-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .storm-meta { gap: 12px; }
+        }
+
+        @media (max-width: 380px) {
+            .time-circle { font-size: 0.55rem; min-width: 24px; }
+            .time-grid { grid-template-columns: repeat(auto-fill, minmax(26px, 1fr)); gap: 4px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-overlay" id="nav-overlay" onclick="closeSidebar()"></div>
+
+    <div class="topbar">
+        <button class="hamburger" onclick="openSidebar()" aria-label="開啟選單">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <span class="topbar-logo">EGTY Lab</span>
+    </div>
+
+    <nav id="sidebar">
+        <div class="logo">
+            EGTY Lab
+            <button class="nav-close-btn" onclick="closeSidebar()" aria-label="關閉選單">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="menu-list">
+            <li>
+                <a class="menu-item active" onclick="showSection('home', this)">
+                    <i class="fa-solid fa-house"></i> 首頁
+                </a>
+            </li>
+            <li class="has-submenu">
+                <a class="menu-item"><i class="fa-solid fa-microchip"></i> 數值模擬</a>
+                <ul class="submenu">
+                    <li><a class="submenu-item" onclick="showSection('model-v4', this)">自研模型V4</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a class="menu-item"><i class="fa-solid fa-route"></i> 路徑系集</a>
+                <ul class="submenu">
+                    <li><a class="submenu-item" onclick="showPathway('EGTY_V4', this)">EGTY_V4</a></li>
+                    <li><a class="submenu-item" onclick="showPathway('FNV3', this)">FNV3</a></li>
+                    <li><a class="submenu-item" onclick="showPathway('GENC', this)">GENC</a></li>
+                </ul>
+            </li>
+            <li class="has-submenu">
+                <a class="menu-item"><i class="fa-solid fa-microchip"></i>其他雜項</a>
+                <ul class="submenu">
+                    <li><a class="submenu-item" onclick="showSection('dev-log', this)">開發紀錄</a></li>
+                </ul>
+                <ul class="submenu">
+                    <li><a class="submenu-item" onclick="showSection('model-info', this)">模型說明</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="home" class="content-section active">
+            <div class="home-card">
+                <h1>歡迎回來</h1>
+                <p class="subtitle">請進入自研模型 V4 查看最新動態預報。</p>
+                <p class="warning">數值模型僅供參考，實際情況可能有所不同。應以官方機構為準。</p>
+
+                <div id="storm-section">
+                    <div class="no-storm-msg" id="storm-loading">
+                        <i class="fa-solid fa-spinner fa-spin" style="margin-right:6px;"></i> 載入活躍風暴資訊中...
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pathway-viewer" class="content-section">
+            <div class="pathway-container">
+                <div class="pathway-visual" id="pw-left">
+                    <div class="image-wrapper pathway-ratio" id="pw-img-wrap">
+                        <img id="pw-img-a" src="" alt="路徑圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;display:none;">
+                        <img id="pw-img-b" src="" alt="路徑圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;display:none;">
+                        <div id="pw-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+                            <i class="fa-solid fa-wind" style="font-size:2.5rem; color:#ddd; margin-bottom:12px;"></i>
+                            <p id="pw-error-msg" style="color:#999; font-size:0.85rem;">正在讀取...</p>
+                        </div>
+                        <div id="pw-preload-wrap" style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(0,0,0,0.08);display:none;">
+                            <div id="pw-preload-bar" style="height:100%;background:var(--primary-blue);width:0%;transition:width 0.2s;"></div>
+                        </div>
+                    </div>
+
+                    <div class="image-wrapper pathway-ratio" id="pw-cone-wrap" style="margin-top:15px;">
+                        <img id="pw-cone-a" src="" alt="潛勢圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;display:none;">
+                        <img id="pw-cone-b" src="" alt="潛勢圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:8px;display:none;">
+                        <div id="pw-cone-placeholder" style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f9f9f9;">
+                            <p style="color:#bbb; font-size:0.75rem;">潛勢路徑圖 (Cone)</p>
+                        </div>
+                    </div>
+                    <div class="playback-controls">
+                        <div class="speed-control">
+                            <label>速度: <span id="pw-speed-val">1.0</span>s</label>
+                            <input type="range" class="speed-slider" id="pw-speed-slider" min="0.2" max="3" step="0.2" value="1">
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="pw-prog-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pathway-panel" id="pw-right">
+                    <div>
+                        <span class="pathway-model-badge" id="pw-model-badge">EGTY_V4</span>
+                    </div>
+
+                    <div class="control-group">
+                        <label>風暴</label>
+                        <select id="pw-sel-storm" onchange="pwOnStormChange()">
+                            <option value="">讀取中...</option>
+                        </select>
+                    </div>
+
+                    <button class="play-btn" onclick="pwTogglePlay()">
+                        <i id="pw-p-icon" class="fa-solid fa-pause"></i>
+                        <span id="pw-p-text">暫停</span>
+                    </button>
+
+                    <label style="font-size:0.75rem; font-weight:600; color:#555; display:block; margin-bottom:6px;">
+                        預報時效
+                    </label>
+                    <div class="pw-time-grid" id="pw-time-grid"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pathway" class="content-section">
+            <div style="background:white; padding:40px; border-radius:12px; border:1px solid var(--border-color); max-width:600px; margin:0 auto;">
+                <p style="color:var(--text-muted); margin-top:10px;">開發中，或許哪次回來就好了 :P</p>
+            </div>
+        </section>
+
+        <section id="model-info" class="content-section">
+            <div style="background:white; padding:40px; border-radius:12px; border:1px solid var(--border-color); max-width:1400px; margin:0 auto;">
+                <h2>模型說明</h2>
+                <p style="color:black; margin-top:10px;">
+                    EGTY_V4 使用了CNN架構進行預測，礙於內存限制(我只能用免費的.w.)，只使用了2001至2002的氣候資料進行訓練，模型解析度也比正常(720*1440)稍低，下採樣後為360*720(約等於0.5度經緯格每一格)。一共使用了15種動態變數(和3種靜態地形資料)作為輸入，涵蓋了地面(溫度、海平面氣壓、海溫、風速）到高空(850hPa勢位、風力、溫度，500勢位、風力、濕度，200勢位、風力)。
+                    相較V3版本變數增加了4種，預測也有明顯提升。
+                </p>
+                <img src="model_compare.png" alt="模型比較圖" style="width:100%; margin-top:20px; border-radius:8px; border:1px solid var(--border-color);">
+                <h2>版本迭代</h2>
+                <p style="color:black; margin-top:10px;">
+                    EGTY_V4.0：架構大改後第一個穩定版(目前網頁使用的模型)。<br>
+                    EGTY_V4.1：基於EGTY_V4.0繼續訓練(未收斂)。<br>
+                    EGTY_V4.2：優化loss函數，強化對極端值的預測(降低低估機率)。<br>
+                    EGTY_V4.3：基於EGTY_V4.2繼續訓練(未收斂)。
+                </p>
+            </div>
+        </section>
+
+        <section id="dev-log" class="content-section">
+            <div style="background:white; padding:40px; border-radius:12px; border:1px solid var(--border-color); max-width:1200px; margin:0 auto;">
+                <div style="margin-bottom:30px; border-bottom:1px solid var(--border-color); padding-bottom:20px;">
+                    <div style="color:var(--primary-blue); font-weight:bold; font-family:monospace; margin-bottom:8px; font-size:0.9em;">
+                        <i class="fa-regular fa-calendar-check"></i> 2026-04-05
+                    </div>
+                    <h4 style="margin:0; font-size:1.2em;">建立網頁</h4>
+                    <p style="color:var(--text-muted); margin-top:10px; font-size:0.95em; line-height:1.6;">
+                        加入了 V4 模型的可視化頁面，包含溫度、氣壓、風速等變數的預報圖展示。
+                    </p>
+                </div>
+                <div style="margin-bottom:30px; border-bottom:1px solid var(--border-color); padding-bottom:20px;">
+                    <div style="color:var(--primary-blue); font-weight:bold; font-family:monospace; margin-bottom:8px; font-size:0.9em;">
+                        <i class="fa-regular fa-calendar-check"></i> 2026-04-06
+                    </div>
+                    <h4 style="margin:0; font-size:1.2em;">增加模型說明頁面和優化</h4>
+                    <p style="color:var(--text-muted); margin-top:10px; font-size:0.95em; line-height:1.6;">
+                        加入雙緩衝機制，提升播放流暢度。修正為"北"大西洋。加入了模型說明頁面。修正錯誤刪除預報資料。<br>
+                        加入了500hPa比濕，調整色彩顯示，優化風速圖顯示。
+                    </p>
+                </div>
+                <div style="margin-bottom:30px; border-bottom:1px solid var(--border-color); padding-bottom:20px;">
+                    <div style="color:var(--primary-blue); font-weight:bold; font-family:monospace; margin-bottom:8px; font-size:0.9em;">
+                        <i class="fa-regular fa-calendar-check"></i> 2026-04-19
+                    </div>
+                    <h4 style="margin:0; font-size:1.2em;">加入首頁風暴資訊 & 路徑系集頁面</h4>
+                    <p style="color:var(--text-muted); margin-top:10px; font-size:0.95em; line-height:1.6;">
+                        首頁新增活躍風暴頁面<br>
+                        路徑系集新增 EGTY_V4、FNV3、GENC 三個子頁面，支援風暴選擇與時效播放。
+                    </p>
+                </div>
+                <div style="margin-bottom:30px; border-bottom:1px solid var(--border-color); padding-bottom:20px;">
+                    <div style="color:var(--primary-blue); font-weight:bold; font-family:monospace; margin-bottom:8px; font-size:0.9em;">
+                        <i class="fa-regular fa-calendar-check"></i> 2026-05-06
+                    </div>
+                    <h4 style="margin:0; font-size:1.2em;">修正一些已知錯誤</h4>
+                    <p style="color:var(--text-muted); margin-top:10px; font-size:0.95em; line-height:1.6;">
+                        優化圖片顯示，修正一些已知錯誤，將自研模型升級為V4.3，準度大幅提高約37%(應該)<br>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="model-v4" class="content-section">
+            <div class="model-container">
+                <div class="visual-area" id="left-area">
+                    <div class="image-wrapper">
+                        <img id="img-a" src="" alt="預報圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;display:none;transition:opacity 0.08s;">
+                        <img id="img-b" src="" alt="預報圖" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;display:none;transition:opacity 0.08s;">
+                        <div id="img-placeholder" style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+                            <i class="fa-solid fa-image" style="font-size:3rem; color:#eee; margin-bottom:15px;"></i>
+                            <p id="error-msg" style="color:#999;">正在初始化清單...</p>
+                            <p style="font-size:1.2rem; margin-top:10px; font-weight:bold;">T <span id="hour-label">+0</span> HR</p>
+                        </div>
+                        <div id="preload-bar-wrap" style="position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(0,0,0,0.08);display:none;">
+                            <div id="preload-bar" style="height:100%;background:var(--primary-blue);width:0%;transition:width 0.2s;"></div>
+                        </div>
+                    </div>
+                    <div class="playback-controls">
+                        <div class="speed-control">
+                            <label>速度: <span id="speed-val">1.0</span>s</label>
+                            <input type="range" class="speed-slider" id="speed-slider" min="0.2" max="3" step="0.2" value="1">
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="prog-bar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-panel" id="right-panel">
+                    <div class="control-group">
+                        <label>預報時段</label>
+                        <select id="sel-forecast" onchange="onControlChange()">
+                            <option value="">讀取中...</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>區域</label>
+                        <select id="sel-region" onchange="onControlChange()">
+                            <option value="west_pacific">西北太平洋</option>
+                            <option value="south_pacific">南太平洋</option>
+                            <option value="east_pacific">東太平洋</option>
+                            <option value="east_atlantic">北大西洋</option>
+                            <option value="global">全球</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>變數</label>
+                        <select id="sel-var" onchange="onControlChange()">
+                            <option value="t2m">2公尺高度氣溫</option>
+                            <option value="msl">海平面氣壓</option>
+                            <option value="wind_speed">10公尺高度風速+等壓線</option>
+                            <option value="q_500">500hPa比濕+等壓線</option>
+                        </select>
+                    </div>
+                    <button class="play-btn" onclick="togglePlay()">
+                        <i id="p-icon" class="fa-solid fa-pause"></i>
+                        <span id="p-text">暫停</span>
+                    </button>
+                    <label style="font-size:0.75rem; font-weight:600; margin-bottom:8px; display:block; color:#555;">
+                        預報時效（小時）
+                    </label>
+                    <div class="time-scroll-container">
+                        <div class="time-grid" id="hour-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    /* ═══════════════════════════════════════════════
+       SIDEBAR / NAV
+    ═══════════════════════════════════════════════ */
+    function openSidebar() {
+        document.getElementById('sidebar').classList.add('open');
+        const ov = document.getElementById('nav-overlay');
+        ov.style.display = 'block';
+        requestAnimationFrame(() => ov.classList.add('open'));
+    }
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        const ov = document.getElementById('nav-overlay');
+        ov.classList.remove('open');
+        setTimeout(() => { ov.style.display = 'none'; }, 300);
+    }
+
+    function showSection(id, el) {
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.menu-item, .submenu-item').forEach(m => m.classList.remove('active'));
+        if (el) el.classList.add('active');
+        closeSidebar();
+        if (id === 'model-v4') setTimeout(syncHeight, 50);
+        if (id === 'pathway-viewer') setTimeout(pwSyncHeight, 50);
+    }
+
+    function syncHeight() {
+        const left  = document.getElementById('left-area');
+        const right = document.getElementById('right-panel');
+        if (!left || !right) return;
+        if (window.innerWidth > 640) right.style.height = left.offsetHeight + 'px';
+        else right.style.height = '';
+    }
+    function pwSyncHeight() {
+        const left  = document.getElementById('pw-left');
+        const right = document.getElementById('pw-right');
+        if (!left || !right) return;
+        if (window.innerWidth > 640) right.style.height = left.offsetHeight + 'px';
+        else right.style.height = '';
+    }
+
+    /* ═══════════════════════════════════════════════
+       HOMEPAGE: 辛普森風力等級
+    ═══════════════════════════════════════════════ */
+    const INTENSITY_MAP = [
+        { max: 24,  cls: 'l',    label: 'L',    zh: '熱帶擾動',   icon: 'fa-wind' },
+        { max: 33,  cls: 'td',    label: 'TD',    zh: '熱帶低壓',   icon: 'fa-wind' },
+        { max: 63,  cls: 'ts',    label: 'TS',    zh: '熱帶風暴',   icon: 'fa-hurricane' },
+        { max: 82,  cls: 'cat1',  label: 'Cat 1', zh: '一級風暴',   icon: 'fa-hurricane' },
+        { max: 95,  cls: 'cat2',  label: 'Cat 2', zh: '二級風暴',   icon: 'fa-hurricane' },
+        { max: 112, cls: 'cat3',  label: 'Cat 3', zh: '三級風暴',   icon: 'fa-hurricane' }, 
+        { max: 136, cls: 'cat4',  label: 'Cat 4', zh: '四級風暴',   icon: 'fa-hurricane' },
+        { max: 999, cls: 'cat5',  label: 'Cat 5', zh: '五級風暴',   icon: 'fa-hurricane' },
+    ];
+
+    function getIntensity(knots) {
+        return INTENSITY_MAP.find(i => knots <= i.max) || INTENSITY_MAP[INTENSITY_MAP.length - 1];
+    }
+
+    function renderStormCards(storms) {
+        const section = document.getElementById('storm-section');
+        const keys = Object.keys(storms);
+
+        if (keys.length === 0) {
+            section.innerHTML = `<div class="no-storm-msg"><i class="fa-solid fa-check-circle" style="margin-right:6px;color:#aaa;"></i>目前無活躍熱帶系統</div>`;
+            return;
+        }
+
+        const tagColors = { td:'#1565c0', ts:'#2e7d32', sts:'#f57f17', ty:'#c62828', sty:'#6a1b9a', super:'#ff6f00' };
+        const tagBg     = { td:'#e3f2fd', ts:'#e8f5e9', sts:'#fff8e1', ty:'#fce4ec', sty:'#f3e5f5', super:'#212121' };
+
+        let html = `<div style="margin-top:20px; font-size:0.78rem; font-weight:700; color:#aaa; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;">
+                        <i class="fa-solid fa-satellite-dish" style="margin-right:6px;"></i>活躍熱帶系統
+                    </div>
+                    <div class="storm-list">`;
+
+        keys.forEach(id => {
+            const s  = storms[id];
+            const iv = getIntensity(s.intensity.max_wind_knots);
+            const lat = s.coordinates.lat >= 0 ? `${s.coordinates.lat}°N` : `${Math.abs(s.coordinates.lat)}°S`;
+            const lon = s.coordinates.lon >= 0 ? `${s.coordinates.lon}°E` : `${Math.abs(s.coordinates.lon)}°W`;
+            const tagStyle = `background:${tagBg[iv.cls]};color:${tagColors[iv.cls]};`;
+
+            html += `
+            <div class="storm-card">
+                <div class="storm-icon ${iv.cls}">
+                    <i class="fa-solid ${iv.icon}"></i>
+                </div>
+                <div class="storm-info">
+                    <div class="storm-name-row">
+                        <span class="storm-name">${s.name}</span>
+                        <span class="storm-id">${id}</span>
+                        <span class="storm-category-tag" style="${tagStyle}">${iv.label} ${iv.zh}</span>
+                    </div>
+                    <div class="storm-meta">
+                        <span class="storm-meta-item"><i class="fa-solid fa-location-crosshairs"></i> ${lat} &nbsp;${lon}</span>
+                        <span class="storm-meta-item"><i class="fa-solid fa-gauge-high"></i> ${s.intensity.mslp_hpa} hPa</span>
+                        <span class="storm-meta-item"><i class="fa-solid fa-wind"></i> ${s.intensity.max_wind_knots} kt</span>
+                    </div>
+                    <div class="storm-time"><i class="fa-regular fa-clock" style="margin-right:4px;"></i>${s.valid_time} UTC</div>
+                </div>
+            </div>`;
+        });
+
+        html += `</div>`;
+        section.innerHTML = html;
+    }
+
+    async function loadStormList() {
+        try {
+            const res = await fetch('./active_typhoon/active_list.json');
+            if (!res.ok) throw new Error('404');
+            const data = await res.json();
+            renderStormCards(data);
+        } catch {
+            document.getElementById('storm-section').innerHTML =
+                `<div class="no-storm-msg"><i class="fa-solid fa-circle-check" style="margin-right:6px;color:#aaa;"></i>目前無活躍熱帶系統</div>`;
+        }
+    }
+
+    /* ═══════════════════════════════════════════════
+       PATHWAY VIEWER
+    ═══════════════════════════════════════════════ */
+    let pwModel       = 'EGTY_V4';
+    let pwStorms      = {};      // { stormId: stormData }
+    let pwCurrentIdx  = 3;       // default to T+0 (last frame)
+    let pwIsPlaying   = true;
+    let pwPlayInterval= 1000;
+    let pwTimer       = null;
+    const pwOffsets   = [-18, -12, -6, 0];
+    const pwImgCache  = new Map();
+    const pwMissing   = new Set();  // set of offset index that are missing
+    let   pwActiveBaseTime = null;
+    
+    function getIntensityShort(knots) {
+        return getIntensity(knots).label;
+    }
+
+    function getPathwayImagePath(stormId, model, offset, validTimeStr) {
+        const base = new Date(validTimeStr.replace(' ', 'T') + 'Z');
+        const t    = new Date(base.getTime() + offset * 3600 * 1000);
+        const y    = t.getUTCFullYear();
+        const mo   = String(t.getUTCMonth() + 1).padStart(2, '0');
+        const d    = String(t.getUTCDate()).padStart(2, '0');
+        const h    = String(t.getUTCHours()).padStart(2, '0');
+        return `./active_typhoon/${stormId}/${model}/${y}-${mo}-${d}T${h}.png`;
+    }
+
+    function getConeImagePath(stormId, model, offset, validTimeStr) {
+        const base = new Date(validTimeStr.replace(' ', 'T') + 'Z');
+        const t    = new Date(base.getTime() + offset * 3600 * 1000);
+        const y    = t.getUTCFullYear();
+        const mo   = String(t.getUTCMonth() + 1).padStart(2, '0');
+        const d    = String(t.getUTCDate()).padStart(2, '0');
+        const h    = String(t.getUTCHours()).padStart(2, '0');
+        return `./active_typhoon/${stormId}/${model}/${y}-${mo}-${d}T${h}_cone.png`;
+    }
+    
+    function pwBuildTimeGrid() {
+        const grid = document.getElementById('pw-time-grid');
+        grid.innerHTML = '';
+        pwOffsets.forEach((offset, i) => {
+            const div = document.createElement('div');
+            div.className = `pw-time-circle probing${i === pwCurrentIdx ? ' active' : ''}`;
+            div.dataset.idx = i;
+            const sign = offset <= 0 ? '' : '+';
+            div.innerHTML = `T${sign}${offset}h`;
+            div.onclick = () => {
+                if (pwMissing.has(i) || div.classList.contains('probing')) return;
+                pwCurrentIdx = i;
+                pwIsPlaying  = false;
+                clearInterval(pwTimer);
+                pwUpdate();
+            };
+            grid.appendChild(div);
+        });
+    }
+
+    function pwSetCircleState(idx, isMissing) {
+        const circles = document.querySelectorAll('#pw-time-grid .pw-time-circle');
+        const c = circles[idx];
+        if (!c) return;
+        c.classList.remove('probing');
+        c.classList.toggle('missing', isMissing);
+    }
+
+    async function pwProbeAll() {
+        const sel = document.getElementById('pw-sel-storm');
+        const stormId = sel.value;
+        if (!stormId || !pwStorms[stormId]) return;
+
+        const baseValidTime = pwStorms[stormId].valid_time; // 原始 valid_time
+        pwImgCache.clear();
+        pwMissing.clear();
+
+        // 顯示讀取條
+        const wrap = document.getElementById('pw-preload-wrap');
+        const bar  = document.getElementById('pw-preload-bar');
+        if (wrap) wrap.style.display = 'block';
+        if (bar) bar.style.width = '0%';
+
+        document.querySelectorAll('#pw-time-grid .pw-time-circle').forEach(c => {
+            c.classList.remove('missing');
+            c.classList.add('probing');
+        });
+
+        pwActiveBaseTime = null; // 每次重新探測前先重置
+
+        // 1. 尋找可用的基準時間 (Backtrack 0 to -24h)
+        let foundBaseTime = null;
+        const backtrackOffsets = [0, -6, -12, -18, -24];
+        
+        for (let bt of backtrackOffsets) {
+            // 以 T+0 (目前時間) 測試該時間點是否存在圖片
+            const testUrl = getPathwayImagePath(stormId, pwModel, bt, baseValidTime);
+            const exists = await new Promise(resolve => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => resolve(false);
+                img.src = testUrl;
+            });
+
+            if (exists) {
+                // 找到可用的起始點，計算出實際偏移後的基準日期對象
+                const originalDate = new Date(baseValidTime.replace(' ', 'T') + 'Z');
+                foundBaseTime = new Date(originalDate.getTime() + bt * 3600 * 1000).toISOString().replace('T', ' ').substring(0, 19);
+                pwActiveBaseTime = foundBaseTime; // 記錄真正有圖的基準時間
+                break; 
+            }
+        }
+
+        if (!foundBaseTime) {
+            // 若找了24小時都沒圖
+            document.getElementById('pw-error-msg').innerText = '找不到預報圖片 (24h內)';
+            if (wrap) wrap.style.display = 'none';
+            return;
+        }
+
+        // 2. 使用找到的基準時間載入所有時效 (T-18 to T0)
+        let loaded = 0;
+        const total = pwOffsets.length;
+
+        // 修正：定義 checkAllDone 函數以更新進度條
+        function checkAllDone() {
+            loaded++;
+            const pct = Math.round(loaded / (total * 2) * 100);
+            if (bar) bar.style.width = pct + '%';
+            if (loaded >= total * 2) {
+                pwFinishProbe();
+            }
+        }
+
+        pwOffsets.forEach((offset, i) => {
+            const srcNormal = getPathwayImagePath(stormId, pwModel, offset, foundBaseTime);
+            const srcCone   = getConeImagePath(stormId, pwModel, offset, foundBaseTime);
+            
+            // 同時對兩張圖進行預載入
+            [srcNormal, srcCone].forEach(src => {
+                const img = new Image();
+                img.onload = () => {
+                    pwImgCache.set(src, img);
+                    if (!src.includes('_cone')) {
+                        pwSetCircleState(i, false);
+                    }
+                    checkAllDone();
+                };
+                img.onerror = () => {
+                    if (src.includes('_cone')) { /* Cone圖缺失可選處理 */ }
+                    else { 
+                        pwMissing.add(i); 
+                        pwSetCircleState(i, true); 
+                    }
+                    checkAllDone();
+                };
+                img.src = src;
+            });
+        });
+    }
+
+    function pwFinishProbe() {
+        setTimeout(() => { 
+            const wrap = document.getElementById('pw-preload-wrap');
+            if (wrap) wrap.style.display = 'none'; 
+        }, 600);
+        // Move to last non-missing frame
+        let idx = pwOffsets.length - 1;
+        while (idx > 0 && pwMissing.has(idx)) idx--;
+        pwCurrentIdx = idx;
+        pwUpdate();
+        if (pwIsPlaying) pwStartLoop();
+    }
+
+    // 修正：重構無狀態的雙緩衝機制
+    function pwShowFrame(src, idA, idB, placeholderId) {
+        const cached = pwImgCache.get(src);
+        const elA = document.getElementById(idA);
+        const elB = document.getElementById(idB);
+        const placeholder = document.getElementById(placeholderId);
+        
+        if (cached) {
+            const isAVisible = elA.style.display === 'block';
+            const nextEl = isAVisible ? elB : elA;
+            const curEl  = isAVisible ? elA : elB;
+
+            nextEl.src = cached.src;
+            nextEl.style.display = 'block';
+            if (placeholder) placeholder.style.display = 'none';
+            curEl.style.display = 'none';
+        } else {
+            if (placeholder) placeholder.style.display = 'flex';
+            elA.style.display = 'none';
+            elB.style.display = 'none';
+        }
+    }
+
+    function pwUpdate() {
+        const circles = document.querySelectorAll('#pw-time-grid .pw-time-circle');
+        circles.forEach((c, i) => c.classList.toggle('active', i === pwCurrentIdx));
+
+        const pct = (pwCurrentIdx / (pwOffsets.length - 1) * 100);
+        document.getElementById('pw-prog-bar').style.width = pct + '%';
+        document.getElementById('pw-p-icon').className = pwIsPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+        document.getElementById('pw-p-text').innerText  = pwIsPlaying ? '暫停' : '播放';
+
+        const sel = document.getElementById('pw-sel-storm');
+        const stormId = sel.value;
+        if (!stormId || !pwStorms[stormId]) return;
+        
+        const validTime = pwActiveBaseTime || pwStorms[stormId].valid_time;
+        const srcNormal = getPathwayImagePath(stormId, pwModel, pwOffsets[pwCurrentIdx], validTime);
+        const srcCone   = srcNormal.replace('.png', '_cone.png');
+
+        // 處理原圖顯示
+        pwShowFrame(srcNormal, 'pw-img-a', 'pw-img-b', 'pw-placeholder');
+        // 處理 Cone 圖顯示
+        pwShowFrame(srcCone, 'pw-cone-a', 'pw-cone-b', 'pw-cone-placeholder');
+    }
+
+    function pwStartLoop() {
+        clearInterval(pwTimer);
+        pwTimer = setInterval(() => {
+            if (!pwIsPlaying) return;
+            let next  = (pwCurrentIdx + 1) % pwOffsets.length;
+            let tries = 0;
+            while (pwMissing.has(next) && tries < pwOffsets.length) {
+                next = (next + 1) % pwOffsets.length;
+                tries++;
+            }
+            pwCurrentIdx = next;
+            pwUpdate();
+        }, pwPlayInterval);
+    }
+
+    function pwTogglePlay() {
+        pwIsPlaying = !pwIsPlaying;
+        if (pwIsPlaying) pwStartLoop();
+        else clearInterval(pwTimer);
+        pwUpdate();
+    }
+
+    function pwOnStormChange() {
+        clearInterval(pwTimer);
+        pwIsPlaying = false;
+        pwUpdate();
+        pwProbeAll();
+    }
+
+    async function pwLoadStorms() {
+        try {
+            const res  = await fetch('./active_typhoon/active_list.json');
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            pwStorms   = data;
+            const sel  = document.getElementById('pw-sel-storm');
+            sel.innerHTML = '';
+            Object.keys(data).forEach(id => {
+                const opt = document.createElement('option');
+                opt.value = id;
+                const iv  = getIntensityShort(data[id].intensity.max_wind_knots);
+                opt.innerText = `${id} ${data[id].name} (${iv})`;
+                sel.appendChild(opt);
+            });
+            pwBuildTimeGrid();
+            pwProbeAll();
+        } catch {
+            document.getElementById('pw-sel-storm').innerHTML = '<option value="">無風暴資料</option>';
+            document.getElementById('pw-error-msg').innerText = '無法讀取風暴清單';
+            pwBuildTimeGrid();
+        }
+    }
+
+    function showPathway(model, el) {
+        pwModel = model;
+        document.getElementById('pw-model-badge').innerText = model;
+
+        clearInterval(pwTimer);
+        pwIsPlaying   = true;
+        pwCurrentIdx  = 3;
+        pwImgCache.clear();
+        pwMissing.clear();
+        
+        // 修正：同時重置路徑圖與潛勢圖的 buffer
+        const bufsNormal = [document.getElementById('pw-img-a'), document.getElementById('pw-img-b')];
+        const bufsCone   = [document.getElementById('pw-cone-a'), document.getElementById('pw-cone-b')];
+        bufsNormal.concat(bufsCone).forEach(b => {
+            if (b) {
+                b.style.display = 'none';
+                b.src = '';
+            }
+        });
+
+        document.getElementById('pw-placeholder').style.display = 'flex';
+        document.getElementById('pw-error-msg').innerText = '讀取中...';
+
+        showSection('pathway-viewer', el);
+        pwBuildTimeGrid();
+
+        if (Object.keys(pwStorms).length > 0) {
+            pwProbeAll();
+        } else {
+            pwLoadStorms();
+        }
+
+        setTimeout(pwSyncHeight, 50);
+    }
+
+    document.getElementById('pw-speed-slider').oninput = function () {
+        pwPlayInterval = this.value * 1000;
+        document.getElementById('pw-speed-val').innerText = parseFloat(this.value).toFixed(1);
+        if (pwIsPlaying) pwStartLoop();
+    };
+
+    /* ═══════════════════════════════════════════════
+       MODEL V4 VIEWER  (original logic, unchanged)
+    ═══════════════════════════════════════════════ */
+    async function loadForecastList() {
+        try {
+            const response = await fetch('./forecast_list.json');
+            const data     = await response.json();
+            const select   = document.getElementById('sel-forecast');
+            select.innerHTML = '';
+            data.EGTY_V4.forEach(info => {
+                const opt = document.createElement('option');
+                opt.value     = info.folder;
+                opt.innerText = `EGTY V4 | ${info.folder}`;
+                select.appendChild(opt);
+            });
+            onControlChange();
+        } catch (err) {
+            console.error("無法加載預報清單:", err);
+            document.getElementById('error-msg').innerText = "出了億點點問題";
+            probeAllImages();
+        }
+    }
+
+    const hours = [];
+    for (let i = -6; i <= 180; i += 6) hours.push(i);
+
+    const missingHours = new Set();
+    let currentIndex = hours.indexOf(0);
+    let isPlaying    = true;
+    let playInterval = 1000;
+    let timer        = null;
+
+    const imgCache  = new Map();
+    const bufs      = [document.getElementById('img-a'), document.getElementById('img-b')];
+    let   activeBuf = 0;
+
+    const placeholder = document.getElementById('img-placeholder');
+    const grid        = document.getElementById('hour-grid');
+
+    hours.forEach((h, i) => {
+        const div = document.createElement('div');
+        div.className  = `time-circle probing${h === 0 ? ' active' : ''}`;
+        div.innerText  = h;
+        div.dataset.idx = i;
+        div.onclick = () => {
+            if (missingHours.has(h) || div.classList.contains('probing')) return;
+            currentIndex = i;
+            isPlaying    = false;
+            clearInterval(timer);
+            update();
+        };
+        grid.appendChild(div);
+    });
+
+    function fmtHour(h) {
+        if (h < 0) return '-' + String(Math.abs(h)).padStart(2, '0');
+        return String(h).padStart(3, '0');
+    }
+
+    function getImagePath(h) {
+        const forecast = document.getElementById('sel-forecast').value;
+        const region   = document.getElementById('sel-region').value;
+        const varName  = document.getElementById('sel-var').value;
+        return `./forecast_${forecast}/V4_model/${varName}/${region}/frame_${fmtHour(h)}.png`;
+    }
+
+    let pendingProbes  = 0;
+    let loadedCount    = 0;
+    let totalAvailable = 0;
+
+    function probeAllImages() {
+        const forecastVal = document.getElementById('sel-forecast').value;
+        if (!forecastVal) return;
+        imgCache.clear();
+        missingHours.clear();
+        pendingProbes  = hours.length;
+        loadedCount    = 0;
+        totalAvailable = 0;
+
+        const barWrap = document.getElementById('preload-bar-wrap');
+        const bar     = document.getElementById('preload-bar');
+        barWrap.style.display = 'block';
+        bar.style.width = '0%';
+
+        grid.querySelectorAll('.time-circle').forEach(c => {
+            c.classList.remove('missing');
+            c.classList.add('probing');
+        });
+
+        hours.forEach((h, i) => {
+            const img = new Image();
+            const src = getImagePath(h);
+            img.onload = () => {
+                imgCache.set(src, img);
+                totalAvailable++;
+                loadedCount++;
+                updatePreloadBar();
+                setCircleState(i, false);
+                onProbeSettled();
+            };
+            img.onerror = () => {
+                missingHours.add(h);
+                loadedCount++;
+                updatePreloadBar();
+                setCircleState(i, true);
+                if (currentIndex === i) skipToAvailable(1);
+                onProbeSettled();
+            };
+            img.src = src;
+        });
+    }
+
+    function updatePreloadBar() {
+        const pct = Math.round(loadedCount / hours.length * 100);
+        document.getElementById('preload-bar').style.width = pct + '%';
+        if (pct >= 100) setTimeout(() => { document.getElementById('preload-bar-wrap').style.display = 'none'; }, 600);
+    }
+
+    function onProbeSettled() {
+        pendingProbes--;
+        if (pendingProbes <= 0) {
+            update();
+            if (isPlaying) startLoop();
+        }
+    }
+
+    function setCircleState(index, isMissing) {
+        const circles = grid.querySelectorAll('.time-circle');
+        const c = circles[index];
+        if (!c) return;
+        c.classList.remove('probing');
+        c.classList.toggle('missing', isMissing);
+    }
+
+    function skipToAvailable(direction) {
+        const step = direction >= 0 ? 1 : -1;
+        let next = (currentIndex + step + hours.length) % hours.length;
+        let tries = 0;
+        while (missingHours.has(hours[next]) && tries < hours.length) {
+            next = (next + step + hours.length) % hours.length;
+            tries++;
+        }
+        if (!missingHours.has(hours[next])) currentIndex = next;
+    }
+
+    function showFrame(src) {
+        const cached = imgCache.get(src);
+        const next   = 1 - activeBuf;
+        const nextEl = bufs[next];
+        const curEl  = bufs[activeBuf];
+
+        const commit = () => {
+            nextEl.style.display = 'block';
+            placeholder.style.display = 'none';
+            curEl.style.display  = 'none';
+            activeBuf = next;
+        };
+
+        if (cached) {
+            nextEl.src = cached.src;
+            commit();
+        } else {
+            showPlaceholder('載入中…');
+            nextEl.onload  = () => { commit(); nextEl.onload = null; };
+            nextEl.onerror = () => {
+                missingHours.add(hours[currentIndex]);
+                setCircleState(currentIndex, true);
+                showPlaceholder('圖片讀取失敗');
+                nextEl.onerror = null;
+            };
+            nextEl.src = src;
+        }
+    }
+
+    function update() {
+        grid.querySelectorAll('.time-circle').forEach((c, i) =>
+            c.classList.toggle('active', i === currentIndex)
+        );
+        const h = hours[currentIndex];
+        document.getElementById('hour-label').innerText = (h >= 0 ? '+' : '') + h;
+        document.getElementById('prog-bar').style.width  = (currentIndex / (hours.length - 1) * 100) + '%';
+        document.getElementById('p-icon').className = isPlaying ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+        document.getElementById('p-text').innerText = isPlaying ? '暫停' : '播放';
+        if (missingHours.has(h)) { showPlaceholder('該時效圖片不存在'); return; }
+        showFrame(getImagePath(h));
+    }
+
+    function showPlaceholder(msg) {
+        bufs[0].style.display = 'none';
+        bufs[1].style.display = 'none';
+        placeholder.style.display = 'flex';
+        document.getElementById('error-msg').innerText = msg;
+    }
+
+    function togglePlay() {
+        isPlaying = !isPlaying;
+        if (isPlaying) startLoop();
+        else clearInterval(timer);
+        update();
+    }
+
+    function startLoop() {
+        clearInterval(timer);
+        timer = setInterval(() => {
+            if (!isPlaying) return;
+            let next  = (currentIndex + 1) % hours.length;
+            let tries = 0;
+            while (missingHours.has(hours[next]) && tries < hours.length) {
+                next = (next + 1) % hours.length;
+                tries++;
+            }
+            currentIndex = next;
+            update();
+        }, playInterval);
+    }
+
+    function onControlChange() {
+        clearInterval(timer);
+        isPlaying = false;
+        update();
+        probeAllImages();
+    }
+
+    document.getElementById('speed-slider').oninput = function () {
+        playInterval = this.value * 1000;
+        document.getElementById('speed-val').innerText = parseFloat(this.value).toFixed(1);
+        if (isPlaying) startLoop();
+    };
+
+    /* ═══════════════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════════════ */
+    loadStormList();
+    loadForecastList();
+    window.addEventListener('resize', () => { syncHeight(); pwSyncHeight(); });
+    setTimeout(syncHeight, 100);
+    </script>
+</body>
+</html>

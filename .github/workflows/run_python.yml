@@ -1,0 +1,70 @@
+name: Auto GFS Download (6-hourly)
+
+on:
+  schedule:
+    - cron: '45 3,9,15,21 * * *'  
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'forecast_list.json' # 防止無限迴圈
+
+jobs:
+  download-gfs:
+    name: Download & Process GFS Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y --no-install-recommends \
+            libeccodes-dev libgeos-dev libproj-dev proj-bin -q
+
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install --quiet torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt
+          pip install git+https://github.com/blaylockbk/Herbie.git
+
+      - name: Run GFS Pipeline
+        run: |
+          python main.py
+          python predict_and_plot.py
+          python FNV3_track.py
+
+      - name: Commit and push results (Reset History)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 1. 建立一個全新的暫時分支
+          git checkout --orphan latest-results
+          
+          # 2. 加入「所有」檔案
+          # 因為有 .gitignore，它會自動跳過 herbie_cache/
+          git add .
+          
+          # 3. 提交變更
+          git commit -m "chore: Model V4 Update $(date -u '+%Y-%m-%d %H:%M UTC')"
+          
+          # 4. 強制覆蓋遠端的 main 分支
+          git push origin latest-results:main --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

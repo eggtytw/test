@@ -1,0 +1,9 @@
+# 排除超大模型檔案
+*.pth
+
+# 排除緩存與暫存
+herbie_cache/
+__pycache__/
+*.grib2
+*.idx
+*.dat

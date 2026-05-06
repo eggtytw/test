@@ -1,0 +1,1379 @@
+{
+    "SH932026": [
+        {
+            "sample_id": 0.0,
+            "data_points": [
+                {
+                    "valid_time": "2026-05-06 12:00:00",
+                    "coordinates": {
+                        "lat": -6.0,
+                        "lon": 84.7
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1008.0,
+                        "max_wind_knots": 20.0
+                    }
+                },
+                {
+                    "valid_time": "2026-05-06 18:00:00",
+                    "coordinates": {
+                        "lat": -6.768802228412255,
+                        "lon": 84.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1006.8641357421875,
+                        "max_wind_knots": 15.015298133787544
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 00:00:00",
+                    "coordinates": {
+                        "lat": -7.2701949860724255,
+                        "lon": 83.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1005.564453125,
+                        "max_wind_knots": 15.370703878080542
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 06:00:00",
+                    "coordinates": {
+                        "lat": -7.2701949860724255,
+                        "lon": 84.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1006.3683471679688,
+                        "max_wind_knots": 13.368932733376452
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 12:00:00",
+                    "coordinates": {
+                        "lat": -7.2701949860724255,
+                        "lon": 84.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1005.061767578125,
+                        "max_wind_knots": 13.936416122734421
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 18:00:00",
+                    "coordinates": {
+                        "lat": -7.7715877437325815,
+                        "lon": 84.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1006.5223388671875,
+                        "max_wind_knots": 14.074068675027865
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 00:00:00",
+                    "coordinates": {
+                        "lat": -8.272980501392752,
+                        "lon": 84.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1004.4922485351562,
+                        "max_wind_knots": 14.6228807559297
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 06:00:00",
+                    "coordinates": {
+                        "lat": -8.774373259052922,
+                        "lon": 84.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1005.5191650390625,
+                        "max_wind_knots": 15.29421724761032
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 12:00:00",
+                    "coordinates": {
+                        "lat": -9.275766016713092,
+                        "lon": 84.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1002.894287109375,
+                        "max_wind_knots": 18.764480102506596
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 18:00:00",
+                    "coordinates": {
+                        "lat": -9.275766016713092,
+                        "lon": 84.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1003.4692993164062,
+                        "max_wind_knots": 18.78479505439077
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 00:00:00",
+                    "coordinates": {
+                        "lat": -9.275766016713092,
+                        "lon": 84.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 999.458984375,
+                        "max_wind_knots": 21.437829982113595
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 06:00:00",
+                    "coordinates": {
+                        "lat": -9.275766016713092,
+                        "lon": 84.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 999.2391357421875,
+                        "max_wind_knots": 21.80628440587532
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 12:00:00",
+                    "coordinates": {
+                        "lat": -9.777158774373248,
+                        "lon": 85.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 996.0079956054688,
+                        "max_wind_knots": 25.550823879702154
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 18:00:00",
+                    "coordinates": {
+                        "lat": -10.278551532033418,
+                        "lon": 85.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 996.1109619140625,
+                        "max_wind_knots": 27.673894874765473
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 00:00:00",
+                    "coordinates": {
+                        "lat": -10.779944289693589,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.98828125,
+                        "max_wind_knots": 27.9751366243568
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 06:00:00",
+                    "coordinates": {
+                        "lat": -11.281337047353759,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.215576171875,
+                        "max_wind_knots": 26.644928032854025
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 12:00:00",
+                    "coordinates": {
+                        "lat": -11.782729805013929,
+                        "lon": 86.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.359130859375,
+                        "max_wind_knots": 29.399615155268453
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 18:00:00",
+                    "coordinates": {
+                        "lat": -12.785515320334255,
+                        "lon": 86.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 995.0703125,
+                        "max_wind_knots": 31.809053418197898
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 00:00:00",
+                    "coordinates": {
+                        "lat": -13.788300835654596,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.8096923828125,
+                        "max_wind_knots": 28.501445815564875
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 06:00:00",
+                    "coordinates": {
+                        "lat": -14.289693593314752,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.8174438476562,
+                        "max_wind_knots": 24.35008521527655
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 12:00:00",
+                    "coordinates": {
+                        "lat": -14.791086350974922,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.6173706054688,
+                        "max_wind_knots": 25.784602351131813
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 18:00:00",
+                    "coordinates": {
+                        "lat": -15.292479108635092,
+                        "lon": 85.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.4960327148438,
+                        "max_wind_knots": 26.800599171820565
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 00:00:00",
+                    "coordinates": {
+                        "lat": -15.793871866295262,
+                        "lon": 86.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 998.5972900390625,
+                        "max_wind_knots": 29.59465447567511
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 06:00:00",
+                    "coordinates": {
+                        "lat": -16.79665738161559,
+                        "lon": 86.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 999.5448608398438,
+                        "max_wind_knots": 30.104854253640095
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 12:00:00",
+                    "coordinates": {
+                        "lat": -17.79944289693593,
+                        "lon": 87.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 999.0625610351562,
+                        "max_wind_knots": 31.934842282859204
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 18:00:00",
+                    "coordinates": {
+                        "lat": -19.303621169916426,
+                        "lon": 88.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.6458740234375,
+                        "max_wind_knots": 37.2546663313913
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 00:00:00",
+                    "coordinates": {
+                        "lat": -21.309192200557092,
+                        "lon": 91.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 988.4029541015625,
+                        "max_wind_knots": 35.01939042401645
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 06:00:00",
+                    "coordinates": {
+                        "lat": -22.813370473537603,
+                        "lon": 94.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 987.3822631835938,
+                        "max_wind_knots": 37.19549459824171
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 12:00:00",
+                    "coordinates": {
+                        "lat": -24.3175487465181,
+                        "lon": 98.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.7554931640625,
+                        "max_wind_knots": 40.114165329134615
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 18:00:00",
+                    "coordinates": {
+                        "lat": -26.824512534818936,
+                        "lon": 102.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 981.5801391601562,
+                        "max_wind_knots": 51.18701223014014
+                    }
+                },
+                {
+                    "valid_time": "2026-05-14 00:00:00",
+                    "coordinates": {
+                        "lat": -28.830083565459603,
+                        "lon": 106.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 975.6549072265625,
+                        "max_wind_knots": 55.34452081230484
+                    }
+                }
+            ]
+        }
+    ],
+    "WP942026": [
+        {
+            "sample_id": 0.0,
+            "data_points": [
+                {
+                    "valid_time": "2026-05-06 12:00:00",
+                    "coordinates": {
+                        "lat": 2.8,
+                        "lon": 157.7
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1009.0,
+                        "max_wind_knots": 15.0
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 12:00:00",
+                    "coordinates": {
+                        "lat": 4.763231197771589,
+                        "lon": 158.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1008.255615234375,
+                        "max_wind_knots": 12.088835678872643
+                    }
+                }
+            ]
+        }
+    ],
+    "WP922026": [
+        {
+            "sample_id": 0.0,
+            "data_points": [
+                {
+                    "valid_time": "2026-05-06 12:00:00",
+                    "coordinates": {
+                        "lat": 7.8,
+                        "lon": 135.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1008.0,
+                        "max_wind_knots": 15.0
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 18:00:00",
+                    "coordinates": {
+                        "lat": 8.272980501392766,
+                        "lon": 138.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1005.6581420898438,
+                        "max_wind_knots": 14.173064113078858
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 00:00:00",
+                    "coordinates": {
+                        "lat": 9.275766016713092,
+                        "lon": 140.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.70703125,
+                        "max_wind_knots": 36.26799225249619
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 06:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 140.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.66796875,
+                        "max_wind_knots": 37.76975317979274
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 12:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 139.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.2689819335938,
+                        "max_wind_knots": 37.126446281011184
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 18:00:00",
+                    "coordinates": {
+                        "lat": 10.278551532033433,
+                        "lon": 138.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.3136596679688,
+                        "max_wind_knots": 41.974202984812976
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 00:00:00",
+                    "coordinates": {
+                        "lat": 10.779944289693603,
+                        "lon": 138.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.38427734375,
+                        "max_wind_knots": 44.97087368772065
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 06:00:00",
+                    "coordinates": {
+                        "lat": 11.281337047353759,
+                        "lon": 137.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.0230712890625,
+                        "max_wind_knots": 44.985738047620266
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 12:00:00",
+                    "coordinates": {
+                        "lat": 11.782729805013929,
+                        "lon": 137.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 991.9060668945312,
+                        "max_wind_knots": 45.01436847727073
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 18:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 136.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.4163208007812,
+                        "max_wind_knots": 47.02209643791225
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 00:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 135.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 998.0275268554688,
+                        "max_wind_knots": 42.23157284024434
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 06:00:00",
+                    "coordinates": {
+                        "lat": 13.286908077994426,
+                        "lon": 134.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 989.271240234375,
+                        "max_wind_knots": 48.01743843176315
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 12:00:00",
+                    "coordinates": {
+                        "lat": 14.289693593314766,
+                        "lon": 133.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.197265625,
+                        "max_wind_knots": 53.579633894751204
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 18:00:00",
+                    "coordinates": {
+                        "lat": 14.791086350974936,
+                        "lon": 132.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.3409423828125,
+                        "max_wind_knots": 52.49039825526716
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 00:00:00",
+                    "coordinates": {
+                        "lat": 15.292479108635106,
+                        "lon": 131.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.6163940429688,
+                        "max_wind_knots": 51.93402425444577
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 06:00:00",
+                    "coordinates": {
+                        "lat": 15.793871866295262,
+                        "lon": 130.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 981.6724243164062,
+                        "max_wind_knots": 46.17716876438358
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 12:00:00",
+                    "coordinates": {
+                        "lat": 16.295264623955433,
+                        "lon": 129.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.646240234375,
+                        "max_wind_knots": 49.57405181359265
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 18:00:00",
+                    "coordinates": {
+                        "lat": 16.796657381615603,
+                        "lon": 129.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.860595703125,
+                        "max_wind_knots": 51.95763218471412
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 00:00:00",
+                    "coordinates": {
+                        "lat": 17.298050139275773,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.6470336914062,
+                        "max_wind_knots": 50.442116368721244
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 06:00:00",
+                    "coordinates": {
+                        "lat": 17.799442896935943,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.3621826171875,
+                        "max_wind_knots": 49.25256285048092
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 12:00:00",
+                    "coordinates": {
+                        "lat": 18.80222841225627,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 984.6472778320312,
+                        "max_wind_knots": 51.22573121944924
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 18:00:00",
+                    "coordinates": {
+                        "lat": 19.30362116991644,
+                        "lon": 127.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.3228759765625,
+                        "max_wind_knots": 47.73231400268926
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 00:00:00",
+                    "coordinates": {
+                        "lat": 19.80501392757661,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.78125,
+                        "max_wind_knots": 50.352603730841096
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 06:00:00",
+                    "coordinates": {
+                        "lat": 20.306406685236766,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.4827270507812,
+                        "max_wind_knots": 49.81209682879998
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 12:00:00",
+                    "coordinates": {
+                        "lat": 20.807799442896936,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.779541015625,
+                        "max_wind_knots": 48.93393633160415
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 18:00:00",
+                    "coordinates": {
+                        "lat": 21.309192200557106,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.4006958007812,
+                        "max_wind_knots": 44.30671134773426
+                    }
+                },
+                {
+                    "valid_time": "2026-05-14 00:00:00",
+                    "coordinates": {
+                        "lat": 21.810584958217277,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.9777221679688,
+                        "max_wind_knots": 41.66990915440768
+                    }
+                }
+            ]
+        }
+    ],
+    "WP932026": [
+        {
+            "sample_id": 0.0,
+            "data_points": [
+                {
+                    "valid_time": "2026-05-06 12:00:00",
+                    "coordinates": {
+                        "lat": 8.5,
+                        "lon": 148.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1005.0,
+                        "max_wind_knots": 20.0
+                    }
+                },
+                {
+                    "valid_time": "2026-05-06 18:00:00",
+                    "coordinates": {
+                        "lat": 7.771587743732596,
+                        "lon": 147.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1006.046630859375,
+                        "max_wind_knots": 21.321088704451086
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 00:00:00",
+                    "coordinates": {
+                        "lat": 8.272980501392766,
+                        "lon": 146.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1006.950439453125,
+                        "max_wind_knots": 27.217662213601788
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 06:00:00",
+                    "coordinates": {
+                        "lat": 8.272980501392766,
+                        "lon": 144.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1001.2918701171875,
+                        "max_wind_knots": 29.646475352127485
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 12:00:00",
+                    "coordinates": {
+                        "lat": 8.774373259052922,
+                        "lon": 142.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1001.6773681640625,
+                        "max_wind_knots": 30.40264682936351
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 18:00:00",
+                    "coordinates": {
+                        "lat": 8.774373259052922,
+                        "lon": 141.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.4695434570312,
+                        "max_wind_knots": 31.139223248749644
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 00:00:00",
+                    "coordinates": {
+                        "lat": 9.275766016713092,
+                        "lon": 140.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.70703125,
+                        "max_wind_knots": 36.26799225249619
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 06:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 140.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.66796875,
+                        "max_wind_knots": 37.76975317979274
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 12:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 139.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.2689819335938,
+                        "max_wind_knots": 37.126446281011184
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 18:00:00",
+                    "coordinates": {
+                        "lat": 10.278551532033433,
+                        "lon": 138.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.3136596679688,
+                        "max_wind_knots": 41.974202984812976
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 00:00:00",
+                    "coordinates": {
+                        "lat": 10.779944289693603,
+                        "lon": 138.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.38427734375,
+                        "max_wind_knots": 44.97087368772065
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 06:00:00",
+                    "coordinates": {
+                        "lat": 11.281337047353759,
+                        "lon": 137.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.0230712890625,
+                        "max_wind_knots": 44.985738047620266
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 12:00:00",
+                    "coordinates": {
+                        "lat": 11.782729805013929,
+                        "lon": 137.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 991.9060668945312,
+                        "max_wind_knots": 45.01436847727073
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 18:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 136.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.4163208007812,
+                        "max_wind_knots": 47.02209643791225
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 00:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 135.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 998.0275268554688,
+                        "max_wind_knots": 42.23157284024434
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 06:00:00",
+                    "coordinates": {
+                        "lat": 13.286908077994426,
+                        "lon": 134.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 989.271240234375,
+                        "max_wind_knots": 48.01743843176315
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 12:00:00",
+                    "coordinates": {
+                        "lat": 14.289693593314766,
+                        "lon": 133.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.197265625,
+                        "max_wind_knots": 53.579633894751204
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 18:00:00",
+                    "coordinates": {
+                        "lat": 14.791086350974936,
+                        "lon": 132.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.3409423828125,
+                        "max_wind_knots": 52.49039825526716
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 00:00:00",
+                    "coordinates": {
+                        "lat": 15.292479108635106,
+                        "lon": 131.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.6163940429688,
+                        "max_wind_knots": 51.93402425444577
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 06:00:00",
+                    "coordinates": {
+                        "lat": 15.793871866295262,
+                        "lon": 130.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 981.6724243164062,
+                        "max_wind_knots": 46.17716876438358
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 12:00:00",
+                    "coordinates": {
+                        "lat": 16.295264623955433,
+                        "lon": 129.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.646240234375,
+                        "max_wind_knots": 49.57405181359265
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 18:00:00",
+                    "coordinates": {
+                        "lat": 16.796657381615603,
+                        "lon": 129.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.860595703125,
+                        "max_wind_knots": 51.95763218471412
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 00:00:00",
+                    "coordinates": {
+                        "lat": 17.298050139275773,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.6470336914062,
+                        "max_wind_knots": 50.442116368721244
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 06:00:00",
+                    "coordinates": {
+                        "lat": 17.799442896935943,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.3621826171875,
+                        "max_wind_knots": 49.25256285048092
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 12:00:00",
+                    "coordinates": {
+                        "lat": 18.80222841225627,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 984.6472778320312,
+                        "max_wind_knots": 51.22573121944924
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 18:00:00",
+                    "coordinates": {
+                        "lat": 19.30362116991644,
+                        "lon": 127.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.3228759765625,
+                        "max_wind_knots": 47.73231400268926
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 00:00:00",
+                    "coordinates": {
+                        "lat": 19.80501392757661,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.78125,
+                        "max_wind_knots": 50.352603730841096
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 06:00:00",
+                    "coordinates": {
+                        "lat": 20.306406685236766,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.4827270507812,
+                        "max_wind_knots": 49.81209682879998
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 12:00:00",
+                    "coordinates": {
+                        "lat": 20.807799442896936,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.779541015625,
+                        "max_wind_knots": 48.93393633160415
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 18:00:00",
+                    "coordinates": {
+                        "lat": 21.309192200557106,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.4006958007812,
+                        "max_wind_knots": 44.30671134773426
+                    }
+                },
+                {
+                    "valid_time": "2026-05-14 00:00:00",
+                    "coordinates": {
+                        "lat": 21.810584958217277,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.9777221679688,
+                        "max_wind_knots": 41.66990915440768
+                    }
+                }
+            ]
+        }
+    ],
+    "WP052026": [
+        {
+            "sample_id": 0.0,
+            "data_points": [
+                {
+                    "valid_time": "2026-05-06 12:00:00",
+                    "coordinates": {
+                        "lat": 7.1,
+                        "lon": 145.7
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1003.0,
+                        "max_wind_knots": 35.0
+                    }
+                },
+                {
+                    "valid_time": "2026-05-06 18:00:00",
+                    "coordinates": {
+                        "lat": 7.771587743732596,
+                        "lon": 145.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1002.60205078125,
+                        "max_wind_knots": 27.23363173242942
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 00:00:00",
+                    "coordinates": {
+                        "lat": 7.771587743732596,
+                        "lon": 144.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1003.2420043945312,
+                        "max_wind_knots": 27.02221115280727
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 06:00:00",
+                    "coordinates": {
+                        "lat": 8.272980501392766,
+                        "lon": 144.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1001.2918701171875,
+                        "max_wind_knots": 29.646475352127485
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 12:00:00",
+                    "coordinates": {
+                        "lat": 8.272980501392766,
+                        "lon": 143.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 1002.7368774414062,
+                        "max_wind_knots": 29.032334041303823
+                    }
+                },
+                {
+                    "valid_time": "2026-05-07 18:00:00",
+                    "coordinates": {
+                        "lat": 8.774373259052922,
+                        "lon": 142.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 998.7006225585938,
+                        "max_wind_knots": 32.734943805804136
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 00:00:00",
+                    "coordinates": {
+                        "lat": 9.275766016713092,
+                        "lon": 140.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 997.70703125,
+                        "max_wind_knots": 36.26799225249619
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 06:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 140.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.66796875,
+                        "max_wind_knots": 37.76975317979274
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 12:00:00",
+                    "coordinates": {
+                        "lat": 9.777158774373262,
+                        "lon": 139.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 993.2689819335938,
+                        "max_wind_knots": 37.126446281011184
+                    }
+                },
+                {
+                    "valid_time": "2026-05-08 18:00:00",
+                    "coordinates": {
+                        "lat": 10.278551532033433,
+                        "lon": 138.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.3136596679688,
+                        "max_wind_knots": 41.974202984812976
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 00:00:00",
+                    "coordinates": {
+                        "lat": 10.779944289693603,
+                        "lon": 138.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.38427734375,
+                        "max_wind_knots": 44.97087368772065
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 06:00:00",
+                    "coordinates": {
+                        "lat": 11.281337047353759,
+                        "lon": 137.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 990.0230712890625,
+                        "max_wind_knots": 44.985738047620266
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 12:00:00",
+                    "coordinates": {
+                        "lat": 11.782729805013929,
+                        "lon": 137.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 991.9060668945312,
+                        "max_wind_knots": 45.01436847727073
+                    }
+                },
+                {
+                    "valid_time": "2026-05-09 18:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 136.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 994.4163208007812,
+                        "max_wind_knots": 47.02209643791225
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 00:00:00",
+                    "coordinates": {
+                        "lat": 12.2841225626741,
+                        "lon": 135.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 998.0275268554688,
+                        "max_wind_knots": 42.23157284024434
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 06:00:00",
+                    "coordinates": {
+                        "lat": 13.286908077994426,
+                        "lon": 134.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 989.271240234375,
+                        "max_wind_knots": 48.01743843176315
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 12:00:00",
+                    "coordinates": {
+                        "lat": 14.289693593314766,
+                        "lon": 133.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.197265625,
+                        "max_wind_knots": 53.579633894751204
+                    }
+                },
+                {
+                    "valid_time": "2026-05-10 18:00:00",
+                    "coordinates": {
+                        "lat": 14.791086350974936,
+                        "lon": 132.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.3409423828125,
+                        "max_wind_knots": 52.49039825526716
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 00:00:00",
+                    "coordinates": {
+                        "lat": 15.292479108635106,
+                        "lon": 131.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.6163940429688,
+                        "max_wind_knots": 51.93402425444577
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 06:00:00",
+                    "coordinates": {
+                        "lat": 15.793871866295262,
+                        "lon": 130.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 981.6724243164062,
+                        "max_wind_knots": 46.17716876438358
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 12:00:00",
+                    "coordinates": {
+                        "lat": 16.295264623955433,
+                        "lon": 129.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.646240234375,
+                        "max_wind_knots": 49.57405181359265
+                    }
+                },
+                {
+                    "valid_time": "2026-05-11 18:00:00",
+                    "coordinates": {
+                        "lat": 16.796657381615603,
+                        "lon": 129.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.860595703125,
+                        "max_wind_knots": 51.95763218471412
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 00:00:00",
+                    "coordinates": {
+                        "lat": 17.298050139275773,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.6470336914062,
+                        "max_wind_knots": 50.442116368721244
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 06:00:00",
+                    "coordinates": {
+                        "lat": 17.799442896935943,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 985.3621826171875,
+                        "max_wind_knots": 49.25256285048092
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 12:00:00",
+                    "coordinates": {
+                        "lat": 18.80222841225627,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 984.6472778320312,
+                        "max_wind_knots": 51.22573121944924
+                    }
+                },
+                {
+                    "valid_time": "2026-05-12 18:00:00",
+                    "coordinates": {
+                        "lat": 19.30362116991644,
+                        "lon": 127.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.3228759765625,
+                        "max_wind_knots": 47.73231400268926
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 00:00:00",
+                    "coordinates": {
+                        "lat": 19.80501392757661,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.78125,
+                        "max_wind_knots": 50.352603730841096
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 06:00:00",
+                    "coordinates": {
+                        "lat": 20.306406685236766,
+                        "lon": 127.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 979.4827270507812,
+                        "max_wind_knots": 49.81209682879998
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 12:00:00",
+                    "coordinates": {
+                        "lat": 20.807799442896936,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.779541015625,
+                        "max_wind_knots": 48.93393633160415
+                    }
+                },
+                {
+                    "valid_time": "2026-05-13 18:00:00",
+                    "coordinates": {
+                        "lat": 21.309192200557106,
+                        "lon": 128.0
+                    },
+                    "intensity": {
+                        "mslp_hpa": 980.4006958007812,
+                        "max_wind_knots": 44.30671134773426
+                    }
+                },
+                {
+                    "valid_time": "2026-05-14 00:00:00",
+                    "coordinates": {
+                        "lat": 21.810584958217277,
+                        "lon": 128.5
+                    },
+                    "intensity": {
+                        "mslp_hpa": 983.9777221679688,
+                        "max_wind_knots": 41.66990915440768
+                    }
+                }
+            ]
+        }
+    ]
+}

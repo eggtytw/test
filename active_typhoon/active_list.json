@@ -1,0 +1,62 @@
+{
+    "SH932026": {
+        "name": "INVEST",
+        "valid_time": "2026-05-06 12:00:00",
+        "coordinates": {
+            "lat": -6.0,
+            "lon": 84.7
+        },
+        "intensity": {
+            "mslp_hpa": 1008.0,
+            "max_wind_knots": 20.0
+        }
+    },
+    "WP052026": {
+        "name": "HAGUPIT",
+        "valid_time": "2026-05-06 12:00:00",
+        "coordinates": {
+            "lat": 7.1,
+            "lon": 145.7
+        },
+        "intensity": {
+            "mslp_hpa": 1003.0,
+            "max_wind_knots": 35.0
+        }
+    },
+    "WP922026": {
+        "name": "INVEST",
+        "valid_time": "2026-05-05 06:00:00",
+        "coordinates": {
+            "lat": 7.8,
+            "lon": 135.0
+        },
+        "intensity": {
+            "mslp_hpa": 1008.0,
+            "max_wind_knots": 15.0
+        }
+    },
+    "WP932026": {
+        "name": "INVEST",
+        "valid_time": "2026-05-05 18:00:00",
+        "coordinates": {
+            "lat": 8.5,
+            "lon": 148.5
+        },
+        "intensity": {
+            "mslp_hpa": 1005.0,
+            "max_wind_knots": 20.0
+        }
+    },
+    "WP942026": {
+        "name": "INVEST",
+        "valid_time": "2026-05-06 06:00:00",
+        "coordinates": {
+            "lat": 2.8,
+            "lon": 157.7
+        },
+        "intensity": {
+            "mslp_hpa": 1009.0,
+            "max_wind_knots": 15.0
+        }
+    }
+}
