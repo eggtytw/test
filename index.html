@@ -888,7 +888,7 @@
         
         for (let bt of backtrackOffsets) {
             // 以 T+0 (目前時間) 測試該時間點是否存在圖片
-            const testUrl = getPathwayImagePath(stormId, pwModel, bt, baseValidTime);
+            const testUrl = getPathwayImagePath(stormId, pwModel, bt, baseValidTime).replace('.png', '_cone.png')
             const exists = await new Promise(resolve => {
                 const img = new Image();
                 img.onload = () => resolve(true);
